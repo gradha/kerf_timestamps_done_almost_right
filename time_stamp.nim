@@ -11,7 +11,7 @@ proc `-`*(x: Second, y: Stamp): Stamp {.borrow.}
 
 
 const
-  year_start = 0
+  year_start = "".len
   month_start = "YYYY-".len
   days_start = "YYYY-MM-".len
   epoch_offset = 1970
