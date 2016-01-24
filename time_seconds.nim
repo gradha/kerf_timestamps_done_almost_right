@@ -1,7 +1,9 @@
-# Implementation of seconds, used for time differences.
+## Implementation of seconds, used for time differences.
 type
-  Second* = distinct int
+  Second* = distinct int ## Our new super type. Super native. Super… yes.
 
+# Bunch of methods we borrow from plain integers. They are mostly one liners,
+# but sometimes even one line is too much.
 proc `<`*(x: Second, y: int): bool {.borrow.}
 proc `<`*(x: int, y: Second): bool {.borrow.}
 proc `<=`*(x: Second, y: int): bool {.borrow.}
@@ -13,10 +15,12 @@ proc `div`*(x: int, y: Second): int {.borrow.}
 proc `+`*(x, y: Second): Second {.borrow.}
 proc `-`*(x, y: Second): Second {.borrow.}
 
+# Proper multiplication of seconds.
 proc `*`*(x: Second, y: int): Second = Second(int(x) * y)
 proc `*`*(x: int, y: Second): Second = Second(x * int(y))
 
 
+# Define some constants for testing and human reference.
 const
   second* = Second(1)
   minute* = Second(60)
