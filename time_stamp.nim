@@ -6,6 +6,8 @@ type
 # Bunch of methods we borrow to allow mixing stamps with seconds.
 proc `+`*(x: Stamp, y: Second): Stamp {.borrow.}
 proc `+`*(x: Second, y: Stamp): Stamp {.borrow.}
+proc `-`*(x: Stamp, y: Second): Stamp {.borrow.}
+proc `-`*(x: Second, y: Stamp): Stamp {.borrow.}
 
 
 const
@@ -75,10 +77,27 @@ proc `$`*(x: Stamp): string =
   result &= align($(1 + numeric_months), 2, '0') & "." &
     align($(1 + numeric_days), 2, '0')
 
+  let
+    numeric_seconds = seconds div second
+    numeric_minutes = minutes div minute
+    numeric_hours = hours div hour
+
+  # Return already if the time ends at midnight.
+  if numeric_seconds < 1 and numeric_minutes < 1 and numeric_hours < 1:
+    return
+
+  # Aww… format an hour then.
+  result &= "T" & align($numeric_hours, 2, '0') &
+    ":" & align($numeric_minutes, 2, '0') &
+    ":" & align($numeric_seconds, 2, '0')
+
 
 proc test_stamps*() =
   echo "Testing stamps"
-  let a = "2012-01-02".date
+  let a = "2012-01-01".date
   echo "let's start at ", a
   echo "plus one day is ", a + 1.d
   echo "plus one month is ", a + 1.m
+  echo "plus one month and a day is ", a + 1.m + 1.d
+  echo "…plus 1h15i17s ", a + 1.m + 1.d + 1.h + 15.i + 17.s
+  echo "…plus 23 hours ", a + 1.m + 2.d - 1.h
