@@ -10,10 +10,12 @@ proc `<=`*(x: Second, y: int): bool {.borrow.}
 proc `<=`*(x: int, y: Second): bool {.borrow.}
 proc `mod`*(x: Second, y: int): int {.borrow.}
 proc `mod`*(x: int, y: Second): int {.borrow.}
+proc `mod`*(x: Second, y: Second): Second {.borrow.}
 proc `div`*(x: Second, y: int): int {.borrow.}
 proc `div`*(x: int, y: Second): int {.borrow.}
 proc `+`*(x, y: Second): Second {.borrow.}
 proc `-`*(x, y: Second): Second {.borrow.}
+
 
 # Proper multiplication of seconds.
 proc `*`*(x: Second, y: int): Second = Second(int(x) * y)
@@ -59,14 +61,21 @@ proc `$`*(x: Second): string =
   if hours < 1:
     return
 
-  let days = hours div 24
+  var days = hours div 24
   hours = hours mod 24
 
   result = (if 0 == hours: result else: $hours & "h" & result)
   if days < 1:
     return
 
-  result = $days & "d" & result
+  let years = days div 365
+  days = days mod 365
+
+  result = (if 0 == days: result else: $days & "d" & result)
+  if years < 1:
+    return
+
+  result = $years & "y" & result
 
 
 const
