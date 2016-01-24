@@ -13,6 +13,7 @@ proc `mod`*(x: int, y: Second): int {.borrow.}
 proc `mod`*(x: Second, y: Second): Second {.borrow.}
 proc `div`*(x: Second, y: int): int {.borrow.}
 proc `div`*(x: int, y: Second): int {.borrow.}
+proc `div`*(x: Second, y: Second): int {.borrow.}
 proc `+`*(x, y: Second): Second {.borrow.}
 proc `-`*(x, y: Second): Second {.borrow.}
 
@@ -28,14 +29,16 @@ const
   minute* = Second(60)
   hour* = minute * 60
   day* = 24 * hour
+  month* = 30 * day
   year* = day * 365
 
 
 # Conversion procs to the Second distinct type.
 proc s*(x: int): Second {.inline.} = Second(x)
-proc m*(x: int): Second {.inline.} = x * minute
+proc i*(x: int): Second {.inline.} = x * minute
 proc h*(x: int): Second {.inline.} = x * hour
 proc d*(x: int): Second {.inline.} = x * day
+proc m*(x: int): Second {.inline.} = x * month
 proc y*(x: int): Second {.inline.} = x * year
 
 proc `$`*(x: Second): string =
@@ -79,7 +82,7 @@ proc `$`*(x: Second): string =
 
 
 const
-  composed_difference = 1.h + 23.m + 45.s
+  composed_difference = 1.h + 23.i + 45.s
   composed_string = $composed_difference
 
 
@@ -94,8 +97,8 @@ proc test_seconds*() =
   # 365d = 365d
   echo "Testing second operations:"
   echo second, " = ", 1.s
-  echo minute + second, " = ", 1.m + 1.s
+  echo minute + second, " = ", 1.i + 1.s
   echo hour, " = ", 1.h
-  echo 1.h + 23.m + 45.s, " = ", composed_difference, " = ", composed_string
+  echo 1.h + 23.i + 45.s, " = ", composed_difference, " = ", composed_string
   echo day, " = ", 1.d
   echo year, " = ", 1.y
