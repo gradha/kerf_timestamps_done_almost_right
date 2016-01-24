@@ -1,13 +1,13 @@
-import time_seconds, strutils, parseutils
+import time_nanos, strutils, parseutils
 
 type
   Stamp* = distinct int
 
 # Bunch of methods we borrow to allow mixing stamps with seconds.
-proc `+`*(x: Stamp, y: Second): Stamp {.borrow.}
-proc `+`*(x: Second, y: Stamp): Stamp {.borrow.}
-proc `-`*(x: Stamp, y: Second): Stamp {.borrow.}
-proc `-`*(x: Second, y: Stamp): Stamp {.borrow.}
+proc `+`*(x: Stamp, y: Nano): Stamp {.borrow.}
+proc `+`*(x: Nano, y: Stamp): Stamp {.borrow.}
+proc `-`*(x: Stamp, y: Nano): Stamp {.borrow.}
+proc `-`*(x: Nano, y: Stamp): Stamp {.borrow.}
 
 
 const
@@ -53,7 +53,7 @@ proc `$`*(x: Stamp): string =
   ##
   ## Because we really are not humans, are we? If we were I would have to deal
   ## with regions and locale and all that bulsh…KILL ALL HUMANS.
-  var total = Second(x)
+  var total = Nano(x)
   let seconds = total mod minute
   total = total - seconds
 

@@ -1,5 +1,5 @@
 # Implementation of seconds, used for time differences.
-import time_seconds, time_stamp, sequtils
+import time_nanos, time_stamp, sequtils
 
 proc test_blog_examples() =
   echo "Showing blog examples.\n"
@@ -13,20 +13,20 @@ proc test_blog_examples() =
 
   let
     r = to_seq(0 .. <10)
-    offsets = r.map_it(Second, (1.m + 1.d + 1.h + 15.i + 17.s) * it)
+    offsets = r.map_it(Nano, (1.m + 1.d + 1.h + 15.i + 17.s) * it)
     values = offsets.map_it(Stamp, "2012.01.01".date + it)
 
   echo "Example 4: ", values
 
   echo "…again but compressed… ", to_seq(0 .. <10)
-      .map_it(Second, (1.m + 1.d + 1.h + 15.i + 17.s) * it)
+      .map_it(Nano, (1.m + 1.d + 1.h + 15.i + 17.s) * it)
       .map_it(Stamp, "2012.01.01".date + it)
 
   echo "\nDid all examples."
 
 proc main() =
-  #test_seconds()
-  #test_stamps()
+  test_seconds()
+  test_stamps()
   test_blog_examples()
 
 when isMainModule: main()
