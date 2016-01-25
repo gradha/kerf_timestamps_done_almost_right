@@ -23,6 +23,7 @@ const
 
 
 proc year*(x: Stamp): int {.inline.} = Nano(x).year + epoch_offset
+proc week*(x: Stamp): int {.inline.} = Nano(x).week
 proc month*(x: Stamp): int {.inline.} = Nano(x).month
 proc day*(x: Stamp): int {.inline.} = Nano(x).day
 proc hour*(x: Stamp): int {.inline.} = Nano(x).hour

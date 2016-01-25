@@ -53,6 +53,11 @@ proc month*(x: Nano): int {.inline.} =
   result = (result mod 365)
   result = 1 + (result mod 12)
 
+proc week*(x: Nano): int {.inline.} =
+  result = int(x div u_day)
+  result = (result mod 365)
+  result = 1 + (result div 7)
+
 proc day*(x: Nano): int {.inline.} =
   result = int(x div u_day)
   result = (result mod 365)

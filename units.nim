@@ -22,6 +22,9 @@ proc test_blog_examples() =
       .map_it(Nano, (1.m + 1.d + 1.h + 15.i + 17.s) * it)
       .map_it(Stamp, "2012.01.01".date + it)
 
+  echo "Example 5 b[week]: ", values.map_it(int, it.week)
+  echo "Example 5 b[second]: ", values.map_it(int, it.second)
+
   echo "\nDid all examples."
 
 proc main() =
