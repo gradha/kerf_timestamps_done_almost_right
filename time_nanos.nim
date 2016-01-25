@@ -127,6 +127,16 @@ proc `$`*(x: Nano): string =
   result = $years & "y" & result
 
 
+# Helper procs to map lists.
+proc `*`*(x: Nano, y: Slice[int]): seq[Nano] =
+  let total_len = y.b - y.a + 1
+  result.new_seq(total_len)
+  var pos = 0
+  while pos < total_len:
+    result[pos] = x * (pos + y.a)
+    pos.inc
+
+
 const
   composed_difference = 1.h + 23.i + 45.s
   composed_string = $composed_difference

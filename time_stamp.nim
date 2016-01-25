@@ -152,6 +152,15 @@ proc `$`*(x: Stamp): string =
     result &= "." & align($numeric_nanos, 9, '0')
 
 
+# Helper procs to map lists.
+proc `+`*(x: Stamp, y: seq[Nano]): seq[Stamp] =
+  result.new_seq(y.len)
+  var pos = 0
+  while pos < y.len:
+    result[pos] = x + y[pos]
+    pos.inc
+
+
 proc test_stamps*() =
   echo "Testing stamps\n"
   var a = "2012-01-01".date
