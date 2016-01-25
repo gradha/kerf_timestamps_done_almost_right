@@ -24,23 +24,61 @@ proc `*`*(x: int64, y: Nano): Nano = Nano(x * int64(y))
 
 
 # Define some constants for testing and human reference.
+# U stands for unit. C stands for cookie.
 const
-  second* = Nano(1_000_000_000)
-  minute* = second * 60
-  hour* = minute * 60
-  day* = 24 * hour
-  month* = 30 * day
-  year* = day * 365
+  u_nano* = Nano(1)
+  u_second* = Nano(1_000_000_000)
+  u_minute* = u_second * 60
+  u_hour* = u_minute * 60
+  u_day* = 24 * u_hour
+  u_month* = 30 * u_day
+  u_year* = u_day * 365
 
 
 # Conversion procs to the Nano distinct type.
 proc ns*(x: int64): Nano {.inline.} = Nano(x)
 proc s*(x: int64): Nano {.inline.} = Nano(x * 1_000_000_000)
-proc i*(x: int64): Nano {.inline.} = x * minute
-proc h*(x: int64): Nano {.inline.} = x * hour
-proc d*(x: int64): Nano {.inline.} = x * day
-proc m*(x: int64): Nano {.inline.} = x * month
-proc y*(x: int64): Nano {.inline.} = x * year
+proc i*(x: int64): Nano {.inline.} = x * u_minute
+proc h*(x: int64): Nano {.inline.} = x * u_hour
+proc d*(x: int64): Nano {.inline.} = x * u_day
+proc m*(x: int64): Nano {.inline.} = x * u_month
+proc y*(x: int64): Nano {.inline.} = x * u_year
+
+# These return the specific time units.
+proc year*(x: Nano): int {.inline.} =
+  result = int(x div u_year)
+
+proc month*(x: Nano): int {.inline.} =
+  result = int(x div u_day)
+  result = (result mod 365)
+  result = 1 + (result mod 12)
+
+proc day*(x: Nano): int {.inline.} =
+  result = int(x div u_day)
+  result = (result mod 365)
+  result = 1 + (result mod 30)
+
+proc hour*(x: Nano): int {.inline.} =
+  result = int(x div u_hour)
+  result = result mod 24
+
+proc minute*(x: Nano): int {.inline.} =
+  result = int(x div u_minute)
+  result = result mod 60
+
+proc second*(x: Nano): int {.inline.} =
+  result = int(x div u_second)
+  result = result mod 60
+
+proc millisecond*(x: Nano): int {.inline.} =
+  result = int(x mod u_second) div 1_000_000
+
+proc microsecond*(x: Nano): int {.inline.} =
+  result = int(x mod u_second) div 1_000
+
+proc nanosecond*(x: Nano): int {.inline.} =
+  result = int(x mod u_second)
+
 
 proc `$`*(x: Nano): string =
   ## Represents the time difference as a human readable string.
@@ -90,22 +128,21 @@ const
 
 
 proc test_seconds*() =
-  # Just some tests for the blog, should output:
-  #
-  # 500ns = 500ns
-  # 1s = 1s
-  # 1m1s500s = 1m1s500s
-  # 1h = 1h
-  # 1h23m45s = 1h23m45s = 1h23m45s
-  # 1d = 1d
-  # 1y = 1y
-  # 364d
-  echo "Testing second operations:"
+  echo "Testing second operations:\n"
   echo Nano(500), " = ", 500.ns
-  echo second, " = ", 1.s
-  echo minute + second + Nano(500), " = ", 1.i + 1.s + 500.ns
-  echo hour, " = ", 1.h
+  echo u_second, " = ", 1.s
+  echo u_minute + u_second + Nano(500), " = ", 1.i + 1.s + 500.ns
+  echo u_hour, " = ", 1.h
   echo 1.h + 23.i + 45.s, " = ", composed_difference, " = ", composed_string
-  echo day, " = ", 1.d
-  echo year, " = ", 1.y
-  echo year - 1.d
+  echo u_day, " = ", 1.d
+  echo u_year, " = ", 1.y
+  echo u_year - 1.d
+
+  let a = composed_difference + 3.y + 6.m + 4.d + 12_987.ns
+  echo "total ", a
+  echo "\tyear ", a.year
+  echo "\tmonth ", a.month
+  echo "\tday ", a.day
+  echo "\thour ", a.hour
+  echo "\tminute ", a.minute
+  echo "\tsecond ", a.second
