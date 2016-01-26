@@ -8,39 +8,6 @@
 using namespace std;
 
 
-struct Nano {
-	long long val; // The timestamp
-	// construct a Value from a long long
-	constexpr explicit Nano(unsigned long long int x) : val(x) {}
-
-	inline Nano operator+(const Nano& rhs) const;
-	inline Nano operator-(const Nano& rhs) const;
-	inline Nano operator*(const int& rhs) const;
-	inline Nano operator/(const int& rhs) const;
-	inline int year(void) const;
-	inline int month(void) const;
-	inline int week(void) const;
-	inline int day(void) const;
-	inline int hour(void) const;
-	inline int minute(void) const;
-	inline int second(void) const;
-	inline int millisecond(void) const;
-	inline int microsecond(void) const;
-	inline int nanosecond(void) const;
-};
-
-Nano operator*(const int& lhs, const Nano& rhs);
-constexpr long long operator/(const long long& lhs, const Nano& rhs);
-constexpr long long operator%(const long long& lhs, const Nano& rhs);
-constexpr Nano operator"" _ns(unsigned long long int x);
-constexpr Nano operator"" _s(unsigned long long int x);
-constexpr Nano operator"" _i(unsigned long long int x);
-constexpr Nano operator"" _h(unsigned long long int x);
-constexpr Nano operator"" _d(unsigned long long int x);
-constexpr Nano operator"" _m(unsigned long long int x);
-constexpr Nano operator"" _y(unsigned long long int x);
-
-
 const Nano u_nano = 1_ns;
 const Nano u_second = Nano(1000000000);
 const Nano u_minute = u_second * 60;
