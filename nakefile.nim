@@ -4,7 +4,7 @@ import
 
 proc run_cpp() =
   with_dir "cpp":
-    dire_shell "g++", "*.cpp", "-std=c++11", "-o", "units.exe"
+    dire_shell "g++", "*.cpp", "-std=c++1y", "-o", "units.exe"
     dire_shell "./units.exe"
 
 proc run_nim() =

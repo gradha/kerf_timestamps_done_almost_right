@@ -49,15 +49,6 @@ Nano Nano::operator+(const Nano& rhs) const { return Nano(val + rhs.val); }
 Nano Nano::operator-(const Nano& rhs) const { return Nano(val - rhs.val); }
 Nano Nano::operator*(const int& rhs) const { return Nano(val * rhs); }
 Nano operator*(const int& lhs, const Nano& rhs) { return Nano(lhs * rhs.val); }
-constexpr long long operator/(const long long& lhs, const Nano& rhs)
-{
-	return lhs / rhs.val;
-}
-
-constexpr long long operator%(const long long& lhs, const Nano& rhs)
-{
-	return lhs % rhs.val;
-}
 
 ostream& operator<<(ostream& o, const Nano& x)
 {
@@ -105,43 +96,6 @@ ostream& operator<<(ostream& o, const Nano& x)
 end:
 	o << buf;
 	return o;
-}
-
-// User defined literals described at
-// http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2378.pdf.
-constexpr Nano operator"" _ns(unsigned long long int x)
-{
-	return Nano(x);
-}
-
-constexpr Nano operator"" _s(unsigned long long int x)
-{
-	return Nano(x * 1000000000);
-}
-
-constexpr Nano operator"" _i(unsigned long long int x)
-{
-	return Nano(x * 1000000000 * 60);
-}
-
-constexpr Nano operator"" _h(unsigned long long int x)
-{
-	return Nano(x * 1000000000 * 60 * 60);
-}
-
-constexpr Nano operator"" _d(unsigned long long int x)
-{
-	return Nano(x * 1000000000 * 60 * 60 * 24);
-}
-
-constexpr Nano operator"" _m(unsigned long long int x)
-{
-	return Nano(x * 1000000000 * 60 * 60 * 24 * 30);
-}
-
-constexpr Nano operator"" _y(unsigned long long int x)
-{
-	return Nano(x * 1000000000 * 60 * 60 * 24 * 365);
 }
 
 const auto composed_difference = 1_h + 23_i + 45_s;
