@@ -16,40 +16,6 @@ const Nano u_day = 24 * u_hour;
 const Nano u_month = 30 * u_day;
 const Nano u_year = u_day * 365;
 
-inline int Nano::year(void) const { return val / u_year; }
-inline int Nano::month(void) const
-{
-	auto result = val / u_day;
-	result = result % 365;
-	return 1 + (result % 12);
-}
-
-inline int Nano::week(void) const
-{
-	auto result = val / u_day;
-	result = result % 365;
-	return 1 + (result % 7);
-}
-
-inline int Nano::day(void) const
-{
-	auto result = val / u_day;
-	result = result % 365;
-	return 1 + (result % 30);
-}
-
-inline int Nano::hour(void) const { return (val / u_hour) % 24; }
-inline int Nano::minute(void) const { return (val / u_minute) % 60; }
-inline int Nano::second(void) const { return (val / u_second) % 60; }
-inline int Nano::millisecond(void) const { return (val % u_second) / 1000000; }
-inline int Nano::microsecond(void) const { return (val % u_second) / 1000; }
-inline int Nano::nanosecond(void) const { return val % u_second; }
-
-Nano Nano::operator+(const Nano& rhs) const { return Nano(val + rhs.val); }
-Nano Nano::operator-(const Nano& rhs) const { return Nano(val - rhs.val); }
-Nano Nano::operator*(const int& rhs) const { return Nano(val * rhs); }
-Nano operator*(const int& lhs, const Nano& rhs) { return Nano(lhs * rhs.val); }
-
 ostream& operator<<(ostream& o, const Nano& x)
 {
 	assert(x.val >= 0);
@@ -121,4 +87,7 @@ void test_nanos()
 	cout << "\thour " << a.hour() << endl;
 	cout << "\tminute " << a.minute() << endl;
 	cout << "\tsecond " << a.second() << endl;
+	cout << "\tmicrosecond " << a.microsecond() << endl;
+	cout << "\tmillisecond " << a.millisecond() << endl;
+	cout << "\tnanosecond " << a.nanosecond() << endl;
 }

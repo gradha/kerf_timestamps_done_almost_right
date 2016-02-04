@@ -2,37 +2,9 @@
 
 #include "time_nanos.h"
 
-#include <iostream>
-#include <iomanip>
-#include <string>
-#include <assert.h>
-
 
 using namespace std;
 
-
-struct Stamp {
-	long long val; // The timestamp
-	// construct a Value from a long long
-	constexpr explicit Stamp(unsigned long long int x) : val(x) {}
-
-	inline Stamp operator+(const Nano& rhs) const;
-	inline Stamp operator-(const Nano& rhs) const;
-	inline Stamp operator*(const int& rhs) const;
-	inline Stamp operator/(const int& rhs) const;
-	inline int year(void) const;
-	inline int month(void) const;
-	inline int week(void) const;
-	inline int day(void) const;
-	inline int hour(void) const;
-	inline int minute(void) const;
-	inline int second(void) const;
-	inline int millisecond(void) const;
-	inline int microsecond(void) const;
-	inline int nanosecond(void) const;
-};
-
-std::ostream& operator<<(std::ostream& o, const Stamp& x);
 
 const int YEAR_START = 0;
 const int MONTH_START = YEAR_START + 5;
@@ -45,96 +17,6 @@ const int MAX_STAMP_LEN = 30;
 const int DAYS_IN_A_MONTH = 30;
 const int EPOCH_OFFSET = 1970;
 const long long ONE_SECOND = 1000000000;
-
-Stamp Stamp::operator+(const Nano& rhs) const
-{
-	return Stamp(val + rhs.val);
-}
-
-Stamp Stamp::operator-(const Nano& rhs) const
-{
-	return Stamp(val - rhs.val);
-}
-
-// Requires C++14 support.
-constexpr Stamp operator"" _date(const char* x, const size_t len)
-{
-	assert(len >= 10 and len < MAX_STAMP_LEN);
-
-	int temp = ((*x++) - '0') * 1000;
-	temp += ((*x++) - '0') * 100;
-	temp += ((*x++) - '0') * 10;
-	temp += ((*x++) - '0') * 1;
-	assert(temp >= EPOCH_OFFSET);
-	x++;
-
-	Stamp result = Stamp(((long long)temp - EPOCH_OFFSET)
-		* ONE_SECOND * 60 * 60 * 24 * 365);
-
-	temp = ((*x++) - '0') * 10;
-	temp += (*x++) - '0';
-	assert(temp > 0 && temp < 13);
-	x++;
-
-	result.val += ((long long)temp - 1) * ONE_SECOND * 60 * 60 * 24 * 30;
-
-	temp = ((*x++) - '0') * 10;
-	temp += (*x++) - '0';
-	assert(temp > 0 && temp < 32);
-
-	result.val += ((long long)temp - 1) * ONE_SECOND * 60 * 60 * 24;
-
-	if (len < MINUTES_START - 1)
-		return result;
-
-	assert('T' == *x);
-	x++;
-
-	temp = ((*x++) - '0') * 10;
-	temp += (*x++) - '0';
-	assert(temp >= 0 && temp < 24);
-	result.val += (long long)temp * ONE_SECOND * 60 * 60;
-
-	if (len < SECONDS_START - 1)
-		return result;
-
-	assert(':' == *x);
-	x++;
-
-	temp = ((*x++) - '0') * 10;
-	temp += (*x++) - '0';
-	assert(temp >= 0 && temp < 60);
-	result.val += (long long)temp * ONE_SECOND * 60;
-
-	if (len < NANOS_START - 1)
-		return result;
-
-	assert(':' == *x);
-	x++;
-
-	temp = ((*x++) - '0') * 10;
-	temp += (*x++) - '0';
-	assert(temp >= 0 && temp < 60);
-	result.val += (long long)temp * ONE_SECOND;
-
-	if (len > NANOS_START) {
-		assert('.' == *x);
-		x++;
-#define _CHECK() do { if (*x < '0' || *x > '9') return result; } while(0)
-		_CHECK(); result.val += (long long)(*x++ - '0') * 100000000;
-		_CHECK(); result.val += (long long)(*x++ - '0') * 10000000;
-		_CHECK(); result.val += (long long)(*x++ - '0') * 1000000;
-		_CHECK(); result.val += (long long)(*x++ - '0') * 100000;
-		_CHECK(); result.val += (long long)(*x++ - '0') * 10000;
-		_CHECK(); result.val += (long long)(*x++ - '0') * 1000;
-		_CHECK(); result.val += (long long)(*x++ - '0') * 100;
-		_CHECK(); result.val += (long long)(*x++ - '0') * 10;
-		_CHECK(); result.val += (long long)(*x++ - '0') * 1;
-#undef _VALID
-	}
-
-	return result;
-}
 
 ostream& operator<<(std::ostream& o, const Stamp& x)
 {
@@ -157,7 +39,7 @@ ostream& operator<<(std::ostream& o, const Stamp& x)
 	numeric_days = 1 + (numeric_days % DAYS_IN_A_MONTH);
 
 	o << setw(2) << numeric_months << '.';
-	o << setw(2) << numeric_days << '.';
+	o << setw(2) << numeric_days;
 
 	const long long numeric_seconds = seconds / u_second.val;
 	const long long numeric_minutes = minutes / u_minute.val;
@@ -200,4 +82,14 @@ void test_stamp()
 	cout << "2001.01.01T04:09:02.123"_date << endl;
 	cout << "2001.01.01T05:04:03.0123"_date << endl;
 	cout << "2001.01.01T06:05:04.012345678"_date << endl;
+	a = "2001.01.01T06:05:04.012345678"_date;
+	cout << "\tyear " << a.year() << endl;
+	cout << "\tmonth " << a.month() << endl;
+	cout << "\tday " << a.day() << endl;
+	cout << "\thour " << a.hour() << endl;
+	cout << "\tminute " << a.minute() << endl;
+	cout << "\tsecond " << a.second() << endl;
+	cout << "\tmicrosecond " << a.microsecond() << endl;
+	cout << "\tmillisecond " << a.millisecond() << endl;
+	cout << "\tnanosecond " << a.nanosecond() << endl;
 }
