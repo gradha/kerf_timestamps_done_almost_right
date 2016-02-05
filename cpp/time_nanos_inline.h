@@ -1,6 +1,12 @@
 // This file can be included only by time_nanos.h
 #ifdef _TIME_NANOS_H_
 
+#include <algorithm>
+#include <assert.h>
+#include <iomanip>
+#include <numeric>
+#include <string>
+
 inline Nano Nano::operator+(const Nano& rhs) const
 {
 	return Nano(val + rhs.val);
@@ -81,7 +87,7 @@ inline int Nano::week(void) const
 {
 	auto result = val / u_day;
 	result = result % 365;
-	return 1 + (result % 7);
+	return 1 + (result / 7);
 }
 
 inline int Nano::day(void) const
@@ -98,5 +104,47 @@ inline int Nano::millisecond(void) const { return (val % u_second) / 1000000; }
 inline int Nano::microsecond(void) const { return (val % u_second) / 1000; }
 inline int Nano::nanosecond(void) const { return val % u_second; }
 
+
+// Picked from http://stackoverflow.com/a/10758845/172690.
+template <typename T>
+std::ostream& operator<< (std::ostream& out, const std::vector<T>& v)
+{
+	if (!v.empty()) {
+		out << '[';
+		std::copy (v.begin(), v.end(), std::ostream_iterator<T>(out, ", "));
+		out << "\b\b]";
+	}
+	return out;
+}
+
+// Stolen from http://stackoverflow.com/q/23871757/172690.
+template<typename T, typename Functor>
+auto map(const std::vector<T> &v, Functor &&f) -> std::vector<decltype(f(*v.begin()))>
+{
+	std::vector<decltype(f(*v.begin()))> ret;
+	std::transform(begin(v), end(v), std::inserter(ret, ret.end()), f);
+    return ret;
+}
+
+// Inspired by http://stackoverflow.com/a/18626013/172690.
+template<typename T> std::vector<T> range(T start, T end)
+{
+	assert(end >= start);
+	std::vector<T> result(end - start);
+	int n(start);
+	std::iota(result.begin(), result.end(), n);
+	return result;
+}
+
+template<typename T>
+std::vector<Nano> Nano::operator*(const std::vector<T>& rhs) const
+{
+	std::vector<Nano> result;
+	result.reserve(rhs.size());
+	for (int f = 0; f < rhs.size(); f++) {
+		result.push_back(Nano(val * rhs[f]));
+	}
+	return result;
+}
 
 #endif // _TIME_NANOS_H_

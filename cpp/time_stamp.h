@@ -4,6 +4,7 @@
 #include "time_nanos.h"
 
 #include <iostream>
+#include <vector>
 
 struct Stamp {
 	long long val; // The timestamp
@@ -24,6 +25,9 @@ struct Stamp {
 	inline int millisecond(void) const;
 	inline int microsecond(void) const;
 	inline int nanosecond(void) const;
+
+	template<typename T>
+	std::vector<Stamp> operator+(const std::vector<T>& rhs) const;
 };
 
 std::ostream& operator<<(std::ostream& o, const Stamp& x);

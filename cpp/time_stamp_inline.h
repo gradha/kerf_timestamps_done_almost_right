@@ -1,10 +1,6 @@
 // This file can be included only by time_stamp.h
 #ifdef _TIME_STAMP_H_
 
-#include <iomanip>
-#include <string>
-#include <assert.h>
-
 extern const int YEAR_START;
 extern const int MONTH_START;
 extern const int DAYS_START;
@@ -156,6 +152,17 @@ inline int Stamp::microsecond(void) const
 inline int Stamp::nanosecond(void) const
 {
 	return Nano(val).nanosecond();
+}
+
+template<typename T>
+std::vector<Stamp> Stamp::operator+(const std::vector<T>& rhs) const
+{
+	std::vector<Stamp> result;
+	result.reserve(rhs.size());
+	for (int f = 0; f < rhs.size(); f++) {
+		result.push_back(*this + rhs[f]);
+	}
+	return result;
 }
 
 #endif // _TIME_STAMP_H_
