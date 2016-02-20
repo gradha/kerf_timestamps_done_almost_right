@@ -37,7 +37,7 @@ const
 
 # Conversion procs to the Nano distinct type.
 proc ns*(x: int64): Nano {.inline.} = Nano(x)
-proc s*(x: int64): Nano {.inline.} = Nano(x * 1_000_000_000)
+proc s*(x: int64): Nano {.inline.} = x * u_second
 proc i*(x: int64): Nano {.inline.} = x * u_minute
 proc h*(x: int64): Nano {.inline.} = x * u_hour
 proc d*(x: int64): Nano {.inline.} = x * u_day
@@ -126,6 +126,10 @@ proc `$`*(x: Nano): string =
 
   result = $years & "y" & result
 
+# Stringification combined with addition.
+proc `+`*(x: Nano, y: string): string = $x & y
+proc `+`*(x: string, y: Nano): string = x & $y
+
 
 # Helper procs to map lists.
 proc `*`*(x: Nano, y: Slice[int]): seq[Nano] =
@@ -147,6 +151,8 @@ proc test_seconds*() =
   echo Nano(500), " = ", 500.ns
   echo u_second, " = ", 1.s
   echo u_minute + u_second + Nano(500), " = ", 1.i + 1.s + 500.ns
+  # Replicates swift line to compare speed…
+  echo u_minute + u_second + Nano(500) + " = " + 1.i + 1.s + 500.ns
   echo u_hour, " = ", 1.h
   echo 1.h + 23.i + 45.s, " = ", composed_difference, " = ", composed_string
   echo u_day, " = ", 1.d
