@@ -9,9 +9,8 @@ let u_year = u_day * 365
 struct Nano : CustomStringConvertible {
 	var value: Int64 = 0
 
-	init(_ x: Int64) {
-		self.value = x
-	}
+	init(_ x: Int64) { self.value = x }
+	init(_ x: Stamp) { self.value = x.value }
 
 	var description: String {
 		assert(self.value >= 0)
@@ -20,7 +19,7 @@ struct Nano : CustomStringConvertible {
 		}
 
 		let nano = self.value % 1_000_000_000
-		var seconds = (self.value / 1_000_000_000) % 60
+		let seconds = (self.value / 1_000_000_000) % 60
 		var minutes = self.value / 60_000_000_000
 
 		var result = (0 == nano ? "" : "\(nano)ns")
@@ -58,57 +57,62 @@ struct Nano : CustomStringConvertible {
 
 	var s: String { return description }
 
-	func year() -> Int { return Int(self.value / u_year.value); }
+	var year: Int { return Int(self.value / u_year.value); }
 
-	func month() -> Int {
+	var month: Int {
 		let result = Int(self.value / u_day.value) % 365
 		return 1 + result % 12
 	}
 
-	func week() -> Int {
+	var week: Int {
 		let result = Int(self.value / u_day.value) % 365
 		return 1 + result / 7
 	}
 
-	func day() -> Int {
+	var day: Int {
 		let result = Int(self.value / u_day.value) % 365
 		return 1 + result % 30
 	}
 
-	func hour() -> Int {
+	var hour: Int {
 		let result = Int(self.value / u_hour.value)
 		return result % 24
 	}
 
-	func minute() -> Int {
+	var minute: Int {
 		let result = Int(self.value / u_minute.value)
 		return result % 60
 	}
 
-	func second() -> Int {
+	var second: Int {
 		let result = Int(self.value / u_second.value)
 		return result % 60
 	}
 
-	func millisecond() -> Int {
+	var millisecond: Int {
 		return Int(self.value % u_second.value) / 1_000_000
 	}
 
-	func microsecond() -> Int {
+	var microsecond: Int {
 		return Int(self.value % u_second.value) / 1_000
 	}
 
-	func nanosecond() -> Int {
+	var nanosecond: Int {
 		return Int(self.value % u_second.value)
 	}
 }
 
-func *(lhs: Nano, rhs: Int) -> Nano { return Nano(lhs.value * Int64(rhs)); }
-func *(lhs: Int, rhs: Nano) -> Nano { return Nano(Int64(lhs) * rhs.value); }
-func +(lhs: Nano, rhs: String) -> String { return lhs.s + rhs; }
-func +(lhs: String, rhs: Nano) -> String { return lhs + rhs.s; }
-func +(lhs: Nano, rhs: Nano) -> Nano { return Nano(lhs.value + rhs.value); }
-func -(lhs: Nano, rhs: Nano) -> Nano { return Nano(lhs.value - rhs.value); }
+func *(lhs: Nano, rhs: Int) -> Nano { return Nano(lhs.value * Int64(rhs)) }
+func *(lhs: Int, rhs: Nano) -> Nano { return Nano(Int64(lhs) * rhs.value) }
+func +(lhs: Nano, rhs: String) -> String { return lhs.s + rhs }
+func +(lhs: String, rhs: Nano) -> String { return lhs + rhs.s }
+func +(lhs: Nano, rhs: Nano) -> Nano { return Nano(lhs.value + rhs.value) }
+func -(lhs: Nano, rhs: Nano) -> Nano { return Nano(lhs.value - rhs.value) }
+func -(lhs: Nano, rhs: Int64) -> Nano { return Nano(lhs.value - rhs) }
+func %(lhs: Nano, rhs: Nano) -> Int64 { return lhs.value % rhs.value }
+func %(lhs: Int64, rhs: Nano) -> Int64 { return lhs % rhs.value }
+func /(lhs: Nano, rhs: Nano) -> Int64 { return lhs.value / rhs.value }
+func /(lhs: Int64, rhs: Nano) -> Int64 { return lhs / rhs.value }
 
 extension Int {
 	var ns: Nano { return Nano(Int64(self)) }
@@ -139,10 +143,10 @@ func test_seconds() {
 
 	let a = composed_difference + 3.y + 6.m + 4.d + 12_987.ns
 	print("total \(a)")
-	print("\tyear \(a.year())")
-	print("\tmonth \(a.month())")
-	print("\tday \(a.day())")
-	print("\thour \(a.hour())")
-	print("\tminute \(a.minute())")
-	print("\tsecond \(a.second())")
+	print("\tyear \(a.year)")
+	print("\tmonth \(a.month)")
+	print("\tday \(a.day)")
+	print("\thour \(a.hour)")
+	print("\tminute \(a.minute)")
+	print("\tsecond \(a.second)")
 }
