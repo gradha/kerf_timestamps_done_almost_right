@@ -35,7 +35,22 @@ public class YourProgram {
 		sendText(password);
 	}
 
+	static void normalInts(int x) {
+		System.out.println("Normal int " + x);
+	}
+
+	static void encryptedInts(@Encrypted int x) {
+		System.out.println("encrypted int " + x);
+	}
+
 	public static void main(String[] args) {
-		System.out.println("Hello World");
+		@Encrypted String test = (@Encrypted String) "Hello World";
+		System.out.println(test);
+		@Encrypted int num = (@Encrypted int)42;
+		int plainNum = 3;
+		normalInts(num);
+		encryptedInts(num);
+		normalInts(plainNum);
+		encryptedInts((@Encrypted int)plainNum);
 	}
 }
