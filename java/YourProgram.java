@@ -43,6 +43,7 @@ public class YourProgram {
 	}
 
 	static void encryptedInts(@Encrypted int x) {
+		@Encrypted int y = x * (@Encrypted int) 3;
 		System.out.println("encrypted int " + x);
 	}
 
