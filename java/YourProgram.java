@@ -51,7 +51,7 @@ public class YourProgram {
 		System.out.println(test);
 		@Encrypted int num = (@Encrypted int)42;
 		int plainNum = 3;
-		normalInts(num);
+		//normalInts(num);
 		encryptedInts(num);
 		normalInts(plainNum);
 		encryptedInts((@Encrypted int)plainNum);
