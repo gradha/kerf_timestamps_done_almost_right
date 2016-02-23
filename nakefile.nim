@@ -33,7 +33,9 @@ proc run_java() =
   with_dir "java":
     let annotations = glob("myqual/*.java")
     for extra_src in annotations:
-      dire_silent_shell "Compiling " & extra_src, javac_normal, extra_src
+      let target = extra_src.change_file_ext("class")
+      if target.needs_refresh(extra_src):
+        dire_silent_shell "Compiling " & extra_src, javac_normal, extra_src
 
     let modules = annotations.map_it(string,
       it.change_file_ext("").replace('/', '.'))
