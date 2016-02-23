@@ -7,9 +7,9 @@ import org.checkerframework.framework.qual.*;
 
 
 /**
- * Denotes that the representation of an object is not encrypted.
+ * Default annotation for longs, 
  */
-@SubtypeOf(PossiblyUnencrypted.class)
-@ImplicitFor(types = { TypeKind.INT })
+@SubtypeOf(Base.class)
+@ImplicitFor(types = { TypeKind.LONG })
 @Target({ElementType.TYPE_USE, ElementType.TYPE_PARAMETER})
-public @interface NotEncrypted {}
+public @interface Plain {}

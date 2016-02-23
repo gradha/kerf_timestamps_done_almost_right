@@ -1,60 +1,24 @@
-import org.checkerframework.framework.qual.*;        // for DefaultQualifier[s]
-import myqual.Encrypted;
-import myqual.NotEncrypted;
+import myqual.Nano;
+import myqual.Plain;
 
-public class YourProgram {
-	private final int OFFSET = 13;
-
-	public @Encrypted String encrypt(@NotEncrypted String text) {
-		@Encrypted String encryptedText = new @Encrypted String();
-		for (char character : text.toCharArray()) {
-			encryptedText += encryptCharacter(character);
-		}
-		return encryptedText;
+@SuppressWarnings("cast.unsafe")
+public class YourProgram
+{
+	static void normalLongs(long x) {
+		System.out.println("Normal long " + x);
 	}
 
-	@SuppressWarnings("encrypted")
-	private @Encrypted char encryptCharacter(char character) {
-		@Encrypted int encryptInt = (character + OFFSET) % Character.MAX_VALUE;
-		return (@Encrypted char) encryptInt;
-	}
-
-
-	// Only send encrypted data!
-	public void sendOverInternet(@Encrypted String msg) {
-		// ...
-	}
-
-	void sendText(@NotEncrypted String plaintext) {
-		// ...
-		@Encrypted String ciphertext = encrypt(plaintext);
-		sendOverInternet(ciphertext);
-		// ...
-	}
-
-	void sendPassword() {
-		@NotEncrypted String password = (@NotEncrypted String)"a";
-		sendText(password);
-		//sendText("wrong");
-	}
-
-	static void normalInts(int x) {
-		System.out.println("Normal int " + x);
-	}
-
-	static void encryptedInts(@Encrypted int x) {
-		@Encrypted int y = x * (@Encrypted int) 3;
-		System.out.println("encrypted int " + x);
+	static void nanoLong(@Nano long x) {
+		@Nano long y = x * (@Nano long) 3;
+		System.out.println("nanoed long " + y);
 	}
 
 	public static void main(String[] args) {
-		@Encrypted String test = (@Encrypted String) "Hello World";
-		System.out.println(test);
-		@Encrypted int num = (@Encrypted int)42;
-		int plainNum = 3;
-		//normalInts(num);
-		encryptedInts(num);
-		normalInts(plainNum);
-		encryptedInts((@Encrypted int)plainNum);
+		@Nano long num = (@Nano long)42;
+		long plainNum = 3l;
+		//normalLongs(num);
+		nanoLong(num);
+		normalLongs(plainNum);
+		nanoLong((@Nano long)plainNum);
 	}
 }
