@@ -1,9 +1,11 @@
+import org.checkerframework.framework.qual.*;        // for DefaultQualifier[s]
 import myqual.Encrypted;
+import myqual.NotEncrypted;
 
 public class YourProgram {
 	private final int OFFSET = 13;
 
-	public @Encrypted String encrypt(String text) {
+	public @Encrypted String encrypt(@NotEncrypted String text) {
 		@Encrypted String encryptedText = new @Encrypted String();
 		for (char character : text.toCharArray()) {
 			encryptedText += encryptCharacter(character);
@@ -23,7 +25,7 @@ public class YourProgram {
 		// ...
 	}
 
-	void sendText(String plaintext) {
+	void sendText(@NotEncrypted String plaintext) {
 		// ...
 		@Encrypted String ciphertext = encrypt(plaintext);
 		sendOverInternet(ciphertext);
@@ -31,8 +33,9 @@ public class YourProgram {
 	}
 
 	void sendPassword() {
-		String password = "a";
+		@NotEncrypted String password = (@NotEncrypted String)"a";
 		sendText(password);
+		//sendText("wrong");
 	}
 
 	static void normalInts(int x) {
