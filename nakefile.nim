@@ -40,9 +40,8 @@ proc run_java() =
     let modules = annotations.map_it(string,
       it.change_file_ext("").replace('/', '.'))
     let param = "-Aquals=" & modules.join(",") & " "
-    echo javac_checker, param, "YourProgram.java"
-    dire_shell javac_checker, param, "YourProgram.java"
-    dire_shell "java YourProgram"
+    dire_silent_shell "Compiling units…", javac_checker, param, "Units.java"
+    dire_shell "java Units"
 
 proc run_all() =
   run_nim()
