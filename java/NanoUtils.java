@@ -1,7 +1,5 @@
 import java.lang.StringBuilder;
-import myqual.Base;
 import myqual.Nano;
-import myqual.Plain;
 import static extra.Out.*;
 
 @SuppressWarnings("nano:cast.unsafe")
@@ -17,6 +15,7 @@ public class NanoUtils
 	public static final @Nano long uYear = mul(uDay, 365);
 
 	// Conversion procs to help with math annotation conversions.
+	public static @Nano long Nano(int x) { return (@Nano long) x; }
 	public static @Nano long ns(int x) { return (@Nano long) x; }
 	public static @Nano long s(int x) { return (@Nano long) x * uSecond; }
 	public static @Nano long i(int x) { return (@Nano long) x * uMinute; }
@@ -149,7 +148,7 @@ public class NanoUtils
 
 	public static void test_seconds() {
 		echo("Testing seconds operations:");
-		echo(nStr((@Nano long) 500) + " = " + nStr(ns(500)));
+		echo(nStr(Nano(500)) + " = " + nStr(ns(500)));
 		echo(nStr(uSecond) + " = " + nStr(s(1)));
 		echo(nStr(uMinute + uSecond + (@Nano long) 500) +
 			" = " + nStr(i(1) + s(1) + ns(500)));
