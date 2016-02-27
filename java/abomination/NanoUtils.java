@@ -2,6 +2,7 @@ package abomination;
 
 import java.lang.StringBuilder;
 import myqual.Nano;
+import myqual.Plain;
 import static extra.Out.*;
 
 @SuppressWarnings("nano:cast.unsafe")
@@ -18,6 +19,7 @@ public class NanoUtils
 
 	// Conversion procs to help with math annotation conversions.
 	public static @Nano long Nano(int x) { return (@Nano long) x; }
+	public static @Nano long Nano(Long x) { return (@Nano long) x; }
 	public static @Nano long ns(int x) { return (@Nano long) x; }
 	public static @Nano long s(int x) { return (@Nano long) x * uSecond; }
 	public static @Nano long i(int x) { return (@Nano long) x * uMinute; }
@@ -25,6 +27,10 @@ public class NanoUtils
 	public static @Nano long d(int x) { return (@Nano long) x * uDay; }
 	public static @Nano long m(int x) { return (@Nano long) x * uMonth; }
 	public static @Nano long y(int x) { return (@Nano long) x * uYear; }
+
+	public static Long nbox(@Nano long x) {
+		return Long.valueOf((@Plain long)x);
+	}
 
 	// Poor man's operator overloading.
 	public static @Nano long mul(@Nano long x, int y) {

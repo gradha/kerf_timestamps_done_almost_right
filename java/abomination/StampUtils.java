@@ -2,9 +2,10 @@ package abomination;
 
 import java.lang.StringBuilder;
 import myqual.Nano;
+import myqual.Plain;
 import myqual.Stamp;
-import static extra.Out.*;
 import static abomination.NanoUtils.*;
+import static extra.Out.*;
 
 @SuppressWarnings("nano:cast.unsafe")
 public class StampUtils
@@ -116,8 +117,14 @@ public class StampUtils
 	}
 
 	public static @Stamp long Stamp(@Nano long x) { return (@Stamp long)x; }
+	public static @Stamp long Stamp(Long x) { return (@Stamp long)x; }
 
-	// Poor man's operator overloading.
+	public static Long sbox(@Stamp long x) {
+		return Long.valueOf((@Plain long)x);
+	}
+
+
+	// sadd() method is sad.
 	public static @Stamp long sadd(@Stamp long x, @Nano long y) {
 		return x + (@Stamp long)y;
 	}
