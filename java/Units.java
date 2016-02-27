@@ -1,7 +1,10 @@
+import static abomination.NanoUtils.*;
+import static abomination.StampUtils.*;
+
 public class Units
 {
 	public static void main(String[] args) {
-		NanoUtils.test_seconds();
-		StampUtils.test_stamps();
+		testSeconds();
+		testStamps();
 	}
 }

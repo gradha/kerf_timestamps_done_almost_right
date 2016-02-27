@@ -41,7 +41,7 @@ proc run_java() =
       it.change_file_ext("").replace('/', '.'))
     let param = "-Aquals=" & modules.join(",") & " "
     dire_silent_shell "Compiling units…", javac_checker,
-      param, glob("*.java").join(" ")
+      param, glob("*.java").join(" "), glob("abomination/*.java").join(" ")
     dire_shell "java -ea Units"
 
 proc run_all() =

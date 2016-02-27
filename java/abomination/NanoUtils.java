@@ -1,3 +1,5 @@
+package abomination;
+
 import java.lang.StringBuilder;
 import myqual.Nano;
 import static extra.Out.*;
@@ -31,13 +33,13 @@ public class NanoUtils
 	public static @Nano long mul(int x, @Nano long y) {
 		return (@Nano long)x * (@Nano long)y;
 	}
-	public static @Nano long add(@Nano long x, int y) {
+	public static @Nano long nadd(@Nano long x, int y) {
 		return (@Nano long)x + (@Nano long)y;
 	}
-	public static @Nano long add(int x, @Nano long y) {
+	public static @Nano long nadd(int x, @Nano long y) {
 		return (@Nano long)x + (@Nano long)y;
 	}
-	public static @Nano long add(@Nano long x, @Nano long y) {
+	public static @Nano long nadd(@Nano long x, @Nano long y) {
 		return x + y;
 	}
 	public static @Nano long sub(@Nano long x, @Nano long y) {
@@ -46,7 +48,7 @@ public class NanoUtils
 	public static @Nano long madd(@Nano long... values) {
 		@Nano long result = values[0];
 		for (int f = 1; f < values.length; f++) {
-			result = add(result, values[f]);
+			result = nadd(result, values[f]);
 		}
 		return result;
 	}
@@ -165,7 +167,7 @@ public class NanoUtils
 	static final @Nano long composedDifference = h(1) + i(23) + s(45);
 	static final String composedString = nStr(composedDifference);
 
-	public static void test_seconds() {
+	public static void testSeconds() {
 		echo("Testing seconds operations:");
 		echo(nStr(Nano(500)) + " = " + nStr(ns(500)));
 		echo(nStr(uSecond) + " = " + nStr(s(1)));

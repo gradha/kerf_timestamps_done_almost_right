@@ -1,7 +1,10 @@
+package abomination;
+
 import java.lang.StringBuilder;
 import myqual.Nano;
 import myqual.Stamp;
 import static extra.Out.*;
+import static abomination.NanoUtils.*;
 
 @SuppressWarnings("nano:cast.unsafe")
 public class StampUtils
@@ -33,15 +36,10 @@ public class StampUtils
 		assert(daysToken.length() == 2 && dd > 0 && dd < 32);
 
 		// Finally, convert the individual values to a (fake) calendar.
-		@Stamp long result = Stamp(
-			NanoUtils.add(
-				NanoUtils.add(
-					NanoUtils.mul(yyyy - epochOffset, NanoUtils.uYear),
-					NanoUtils.mul((mm - 1) * daysInAMonth, NanoUtils.uDay)
-					),
-				NanoUtils.mul(dd - 1, NanoUtils.uDay)
-				)
-			);
+		@Stamp long result = Stamp(madd(
+			mul(yyyy - epochOffset, uYear),
+			mul((mm - 1) * daysInAMonth, uDay),
+			mul(dd - 1, uDay)));
 
 		if (x.length() < minutesStart - 1) {
 			return result;
@@ -51,7 +49,7 @@ public class StampUtils
 		final String hoursToken = parseDigitsWhile(x, hoursStart);
 		final int hh = Integer.valueOf(hoursToken);
 		assert(hoursToken.length() == 2 && hh >= 0 && hh < 24);
-		result = add(result, NanoUtils.h(hh));
+		result = sadd(result, h(hh));
 
 		if (x.length() < secondsStart - 1) {
 			return result;
@@ -60,7 +58,7 @@ public class StampUtils
 		final String minutesToken = parseDigitsWhile(x, minutesStart);
 		final int minutes = Integer.valueOf(minutesToken);
 		assert(minutesToken.length() == 2 && minutes >= 0 && minutes < 60);
-		result = add(result, NanoUtils.i(minutes));
+		result = sadd(result, i(minutes));
 
 		if (x.length() < nanosStart - 1) {
 			return result;
@@ -69,7 +67,7 @@ public class StampUtils
 		final String secondsToken = parseDigitsWhile(x, secondsStart);
 		final int seconds = Integer.valueOf(secondsToken);
 		assert(secondsToken.length() == 2 && seconds >= 0 && seconds < 60);
-		result = add(result, NanoUtils.s(seconds));
+		result = sadd(result, s(seconds));
 
 		if (x.length() > nanosStart) {
 			final String nanosToken = parseDigitsWhile(x, nanosStart);
@@ -81,7 +79,7 @@ public class StampUtils
 				numNanos++;
 			}
 
-			result = add(result, NanoUtils.Nano(nanos));
+			result = sadd(result, Nano(nanos));
 		}
 
 		return result;
@@ -120,30 +118,30 @@ public class StampUtils
 	public static @Stamp long Stamp(@Nano long x) { return (@Stamp long)x; }
 
 	// Poor man's operator overloading.
-	public static @Stamp long add(@Stamp long x, @Nano long y) {
+	public static @Stamp long sadd(@Stamp long x, @Nano long y) {
 		return x + (@Stamp long)y;
 	}
 
 	public static String sStr(@Stamp long x) {
 		@Nano long total = (@Nano long)x;
-		@Nano final long seconds = total % NanoUtils.uMinute;
+		@Nano final long seconds = total % uMinute;
 		total = total - seconds;
 
-		@Nano final long minutes = total % NanoUtils.uHour;
+		@Nano final long minutes = total % uHour;
 		total = total - minutes;
 
-		@Nano final long hours = total % NanoUtils.uDay;
+		@Nano final long hours = total % uDay;
 		total = total - hours;
 
-		@Nano final long days = total % NanoUtils.uYear;
-		@Nano final int years = (int)((total - days) / NanoUtils.uYear);
+		@Nano final long days = total % uYear;
+		@Nano final int years = (int)((total - days) / uYear);
 
 		StringBuilder result = new StringBuilder(maxStampLen);
 		result.append(String.valueOf(epochOffset + years));
 		result.append(".");
 
 		// Convert days to numbers for final in year calculations.
-		int numericDays = (int)(days / NanoUtils.uDay);
+		int numericDays = (int)(days / uDay);
 		int numericMonths = numericDays / daysInAMonth;
 		numericDays = numericDays % daysInAMonth;
 
@@ -151,10 +149,10 @@ public class StampUtils
 		result.append(".");
 		result.append(zeroAlign(String.valueOf(1 + numericDays), 2));
 
-		final int numericSeconds = (int)(seconds / NanoUtils.uSecond);
-		final int numericMinutes = (int)(minutes / NanoUtils.uMinute);
-		final int numericHours = (int)(hours / NanoUtils.uHour);
-		final int numericNanos = (int)(seconds % NanoUtils.uSecond);
+		final int numericSeconds = (int)(seconds / uSecond);
+		final int numericMinutes = (int)(minutes / uMinute);
+		final int numericHours = (int)(hours / uHour);
+		final int numericNanos = (int)(seconds % uSecond);
 
 		// Return already if the time ends at midnight.
 		if (numericSeconds < 1 && numericMinutes < 1
@@ -181,59 +179,55 @@ public class StampUtils
 
 	// Time unit extraction methods.
 	public static int sYear(@Stamp long x) {
-		return NanoUtils.nYear((@Nano long)x) + epochOffset;
+		return nYear((@Nano long)x) + epochOffset;
 	}
 
 	public static int sMonth(@Stamp long x) {
-		return NanoUtils.nMonth((@Nano long)x);
+		return nMonth((@Nano long)x);
 	}
 
 	public static int sWeek(@Stamp long x) {
-		return NanoUtils.nWeek((@Nano long)x);
+		return nWeek((@Nano long)x);
 	}
 
 	public static int sDay(@Stamp long x) {
-		return NanoUtils.nDay((@Nano long)x);
+		return nDay((@Nano long)x);
 	}
 
 	public static int sHour(@Stamp long x) {
-		return NanoUtils.nHour((@Nano long)x);
+		return nHour((@Nano long)x);
 	}
 
 	public static int sMinute(@Stamp long x) {
-		return NanoUtils.nMinute((@Nano long)x);
+		return nMinute((@Nano long)x);
 	}
 
 	public static int sSecond(@Stamp long x) {
-		return NanoUtils.nSecond((@Nano long)x);
+		return nSecond((@Nano long)x);
 	}
 
 	public static int sMillisecond(@Stamp long x) {
-		return NanoUtils.nMillisecond((@Nano long)x);
+		return nMillisecond((@Nano long)x);
 	}
 
 	public static int sMicrosecond(@Stamp long x) {
-		return NanoUtils.nMicrosecond((@Nano long)x);
+		return nMicrosecond((@Nano long)x);
 	}
 
 	public static int sNanosecond(@Stamp long x) {
-		return NanoUtils.nNanosecond((@Nano long)x);
+		return nNanosecond((@Nano long)x);
 	}
 
-	public static void test_stamps() {
+	public static void testStamps() {
 		echo("Testing stamps:\n");
 		@Stamp long a = Date("2012-01-01");
 		echo("let's start at " + sStr(a));
-		echo("plus one day is " + sStr(add(a, NanoUtils.d(1))));
-		echo("plus one month is " + sStr(add(a, NanoUtils.m(1))));
-		echo("plus one month and a day is " +
-			sStr(add(a, NanoUtils.add(NanoUtils.m(1), NanoUtils.d(1)))));
-		echo("…plus 1h15i17s " + sStr(add(a, NanoUtils.madd(
-			NanoUtils.m(1), NanoUtils.d(1),
-			NanoUtils.h(1), NanoUtils.i(15), NanoUtils.s(17)))));
-		echo("…plus 23 hours " + sStr(add(a,
-			NanoUtils.sub(NanoUtils.add(NanoUtils.m(1), NanoUtils.d(2)),
-				NanoUtils.h(1)))));
+		echo("plus one day is " + sStr(sadd(a, d(1))));
+		echo("plus one month is " + sStr(sadd(a, m(1))));
+		echo("plus one month and a day is " + sStr(sadd(a, nadd(m(1), d(1)))));
+		echo("…plus 1h15i17s " + sStr(sadd(a,
+			madd(m(1), d(1), h(1), i(15), s(17)))));
+		echo("…plus 23 hours " + sStr(sadd(a, sub(nadd(m(1), d(2)), h(1)))));
 		echo(sStr(Date("2001.01.01T01")));
 		echo(sStr(Date("2001.01.01T02:01")));
 		echo(sStr(Date("2001.01.01T03:02:01")));
