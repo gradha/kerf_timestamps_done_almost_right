@@ -103,6 +103,8 @@ proc date*(x: string): Stamp =
     result = result + Nano(nanos)
 
 
+proc zeroalign(x: string, count = 2): string {.inline.} = align(x, count, '0')
+
 proc `$`*(x: Stamp): string =
   ## Represents the time as a computer readable date.
   ##
@@ -129,8 +131,8 @@ proc `$`*(x: Stamp): string =
   let numeric_months = numeric_days div days_in_a_month
   numeric_days = numeric_days mod days_in_a_month
 
-  result &= align($(1 + numeric_months), 2, '0') & "." &
-    align($(1 + numeric_days), 2, '0')
+  result &= zeroalign($(1 + numeric_months)) & "." &
+    zeroalign($(1 + numeric_days))
 
   let
     numeric_seconds = seconds div u_second
@@ -144,12 +146,12 @@ proc `$`*(x: Stamp): string =
     return
 
   # Aww… format an hour then.
-  result &= "T" & align($numeric_hours, 2, '0') &
-    ":" & align($numeric_minutes, 2, '0') &
-    ":" & align($numeric_seconds, 2, '0')
+  result &= "T" & zeroalign($numeric_hours) &
+    ":" & zeroalign($numeric_minutes) &
+    ":" & zeroalign($numeric_seconds)
 
   if numeric_nanos > 0:
-    result &= "." & align($numeric_nanos, 9, '0')
+    result &= "." & zeroalign($numeric_nanos, 9)
 
 
 # Helper procs to map lists.
