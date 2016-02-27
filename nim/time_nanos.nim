@@ -126,9 +126,9 @@ proc `$`*(x: Nano): string =
 
   result = $years & "y" & result
 
-# Stringification combined with addition.
-proc `+`*(x: Nano, y: string): string = $x & y
-proc `+`*(x: string, y: Nano): string = x & $y
+# Combination of strings the proper way, avoid overloading + operator.
+proc `&`*(x: Nano, y: string): string = $x & y
+proc `&`*(x: string, y: Nano): string = x & $y
 
 
 # Helper procs to map lists.
@@ -152,7 +152,7 @@ proc test_seconds*() =
   echo u_second, " = ", 1.s
   echo u_minute + u_second + Nano(500), " = ", 1.i + 1.s + 500.ns
   # Replicates swift line to compare speed…
-  echo u_minute + u_second + Nano(500) + " = " + 1.i + 1.s + 500.ns
+  echo u_minute + u_second + Nano(500) & " = " & 1.i + 1.s + 500.ns
   echo u_hour, " = ", 1.h
   echo 1.h + 23.i + 45.s, " = ", composed_difference, " = ", composed_string
   echo u_day, " = ", 1.d
