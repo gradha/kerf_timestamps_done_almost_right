@@ -14,13 +14,13 @@ proc s*(x: int64): Nano {.inline.} = x * u_second
 proc i*(x: int64): Nano {.inline.} = x * u_minute
 
 proc `$`*(x: Nano): string = $(int64(x))
-proc `+`*(x: Nano, y: string): string = $x & y
-proc `+`*(x: string, y: Nano): string = x & $y
+proc `&`*(x: Nano, y: string): string = $x & y
+proc `&`*(x: string, y: Nano): string = x & $y
 
 
 proc test_seconds*() =
   echo "Testing second operations:\n"
   echo u_minute + u_second + Nano(500), " = ", 1.i + 1.s + 500.ns
-  echo u_minute + u_second + Nano(500) + " = " + 1.i + 1.s + 500.ns
+  echo u_minute + u_second + Nano(500) & " = " & 1.i + 1.s + 500.ns
 
 test_seconds()
