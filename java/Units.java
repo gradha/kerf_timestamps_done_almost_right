@@ -37,8 +37,18 @@ public class Units
 			.map(longNano -> sbox(sadd(Date("2012.01.01"), Nano(longNano))))
 			.collect(Collectors.toList());
 
-		for (Long longStamp : values) {
-			echo("\t" + sStr(Stamp(longStamp)));
-		}
+		echo("Example 4: @[" + values.stream()
+			.map(longStamp -> sStr(Stamp(longStamp)))
+			.collect(Collectors.joining(", ")) + "]");
+
+		echo("Example 5: b[week]: @[" + values.stream()
+			.map(longStamp -> String.valueOf(sWeek(Stamp(longStamp))))
+			.collect(Collectors.joining(", ")) + "]");
+
+		echo("Example 5: b[second]: @[" + values.stream()
+			.map(longStamp -> String.valueOf(sSecond(Stamp(longStamp))))
+			.collect(Collectors.joining(", ")) + "]");
+
+		echo("\nDid most examples, awkwardly.");
 	}
 }

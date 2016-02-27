@@ -73,7 +73,7 @@ public class NanoUtils
 	public static int nWeek(@Nano long x) {
 		int result = (int)(x / uDay);
 		result = result % 365;
-		return 1 + (result % 7);
+		return 1 + (result / 7);
 	}
 
 	public static int nDay(@Nano long x) {
