@@ -31,6 +31,25 @@ public class NanoUtils
 	public static @Nano long mul(int x, @Nano long y) {
 		return (@Nano long)x * (@Nano long)y;
 	}
+	public static @Nano long add(@Nano long x, int y) {
+		return (@Nano long)x + (@Nano long)y;
+	}
+	public static @Nano long add(int x, @Nano long y) {
+		return (@Nano long)x + (@Nano long)y;
+	}
+	public static @Nano long add(@Nano long x, @Nano long y) {
+		return x + y;
+	}
+	public static @Nano long sub(@Nano long x, @Nano long y) {
+		return x - y;
+	}
+	public static @Nano long madd(@Nano long... values) {
+		@Nano long result = values[0];
+		for (int f = 1; f < values.length; f++) {
+			result = add(result, values[f]);
+		}
+		return result;
+	}
 
 	// Time unit extraction methods.
 	public static int nYear(@Nano long x) {

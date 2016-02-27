@@ -42,7 +42,7 @@ proc run_java() =
     let param = "-Aquals=" & modules.join(",") & " "
     dire_silent_shell "Compiling units…", javac_checker,
       param, glob("*.java").join(" ")
-    dire_shell "java Units"
+    dire_shell "java -ea Units"
 
 proc run_all() =
   run_nim()
