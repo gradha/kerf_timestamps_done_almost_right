@@ -10,7 +10,20 @@ let epoch_offset = 1970
 let days_in_a_month = 30
 let digits: Set<Character> = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
-struct Stamp : CustomStringConvertible {
+protocol TimeComponents {
+	var year: Int { get }
+	var week: Int { get }
+	var month: Int { get }
+	var day: Int { get }
+	var hour: Int { get }
+	var minute: Int { get }
+	var second: Int { get }
+	var microsecond: Int { get }
+	var millisecond: Int { get }
+	var nanosecond: Int { get }
+}
+
+struct Stamp : CustomStringConvertible, TimeComponents {
 	var value: Int64 = 0
 
 	init(_ x: Int64) { value = x }
@@ -145,6 +158,29 @@ extension String {
 	var date: Stamp { return Stamp(self) }
 	// Avoid losing sanity. Hey, at least this is not java!
 	var len: Int { return self.characters.count }
+}
+
+// Overload array subscript for TimeComponents protocol inheriting types.
+extension Array where Element: TimeComponents {
+	// Marking as optional because swift 2.1 doesn't allow throwing inside
+	// subscripts yet: http://stackoverflow.com/a/33724709/172690 or does it?
+	subscript(position: String) -> [Int]? {
+		get {
+			switch (position) {
+				case "week": return self.map() { $0.week }
+				case "year": return self.map() { $0.year }
+				case "month": return self.map() { $0.month }
+				case "day": return self.map() { $0.day }
+				case "hour": return self.map() { $0.hour }
+				case "minute": return self.map() { $0.minute }
+				case "second": return self.map() { $0.second }
+				case "microsecond": return self.map() { $0.microsecond }
+				case "millisecond": return self.map() { $0.millisecond }
+				case "nanosecond": return self.map() { $0.nanosecond }
+				default: return nil
+			}
+		}
+	}
 }
 
 // Lifted code from Nim to make it look as close as possible to original.

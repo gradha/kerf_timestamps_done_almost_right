@@ -45,43 +45,43 @@ proc m*(x: int64): Nano {.inline.} = x * u_month
 proc y*(x: int64): Nano {.inline.} = x * u_year
 
 # These return the specific time units.
-proc year*(x: Nano): int {.inline.} =
+proc year*(x: Nano): int {.procvar.} =
   result = int(x div u_year)
 
-proc month*(x: Nano): int {.inline.} =
+proc month*(x: Nano): int {.procvar.} =
   result = int(x div u_day)
   result = (result mod 365)
   result = 1 + (result mod 12)
 
-proc week*(x: Nano): int {.inline.} =
+proc week*(x: Nano): int {.procvar.} =
   result = int(x div u_day)
   result = (result mod 365)
   result = 1 + (result div 7)
 
-proc day*(x: Nano): int {.inline.} =
+proc day*(x: Nano): int {.procvar.} =
   result = int(x div u_day)
   result = (result mod 365)
   result = 1 + (result mod 30)
 
-proc hour*(x: Nano): int {.inline.} =
+proc hour*(x: Nano): int {.procvar.} =
   result = int(x div u_hour)
   result = result mod 24
 
-proc minute*(x: Nano): int {.inline.} =
+proc minute*(x: Nano): int {.procvar.} =
   result = int(x div u_minute)
   result = result mod 60
 
-proc second*(x: Nano): int {.inline.} =
+proc second*(x: Nano): int {.procvar.} =
   result = int(x div u_second)
   result = result mod 60
 
-proc millisecond*(x: Nano): int {.inline.} =
+proc millisecond*(x: Nano): int {.procvar.} =
   result = int(x mod u_second) div 1_000_000
 
-proc microsecond*(x: Nano): int {.inline.} =
+proc microsecond*(x: Nano): int {.procvar.} =
   result = int(x mod u_second) div 1_000
 
-proc nanosecond*(x: Nano): int {.inline.} =
+proc nanosecond*(x: Nano): int {.procvar.} =
   result = int(x mod u_second)
 
 

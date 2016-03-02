@@ -30,6 +30,9 @@ func test_blog_examples() {
 	// the compiler is too retarded for complex expressions.
 	print("Example 5 b[week]: \(values.map() { $0.week })")
 	print("Example 5 b[second]: \(values.map() { $0.second })")
+	// Overloaded substring with runtime errors, ugh.
+	print("Example 5 b[second]: \(values["week"])")
+	print("Example 5 b[second]: \(values["runtime error"])")
 
 	print("\nDid most examples.")
 }

@@ -22,16 +22,16 @@ const
   days_in_a_month = 30 # Because I'm worth it…
 
 
-proc year*(x: Stamp): int {.inline.} = Nano(x).year + epoch_offset
-proc week*(x: Stamp): int {.inline.} = Nano(x).week
-proc month*(x: Stamp): int {.inline.} = Nano(x).month
-proc day*(x: Stamp): int {.inline.} = Nano(x).day
-proc hour*(x: Stamp): int {.inline.} = Nano(x).hour
-proc minute*(x: Stamp): int {.inline.} = Nano(x).minute
-proc second*(x: Stamp): int {.inline.} = Nano(x).second
-proc microsecond*(x: Stamp): int {.inline.} = Nano(x).microsecond
-proc millisecond*(x: Stamp): int {.inline.} = Nano(x).millisecond
-proc nanosecond*(x: Stamp): int {.inline.} = Nano(x).nanosecond
+proc year*(x: Stamp): int {.procvar.} = Nano(x).year + epoch_offset
+proc week*(x: Stamp): int {.procvar.} = Nano(x).week
+proc month*(x: Stamp): int {.procvar.} = Nano(x).month
+proc day*(x: Stamp): int {.procvar.} = Nano(x).day
+proc hour*(x: Stamp): int {.procvar.} = Nano(x).hour
+proc minute*(x: Stamp): int {.procvar.} = Nano(x).minute
+proc second*(x: Stamp): int {.procvar.} = Nano(x).second
+proc microsecond*(x: Stamp): int {.procvar.} = Nano(x).microsecond
+proc millisecond*(x: Stamp): int {.procvar.} = Nano(x).millisecond
+proc nanosecond*(x: Stamp): int {.procvar.} = Nano(x).nanosecond
 
 
 proc date*(x: string): Stamp =
@@ -160,6 +160,15 @@ proc `+`*(x: Stamp, y: seq[Nano]): seq[Stamp] =
   var pos = 0
   while pos < y.len:
     result[pos] = x + y[pos]
+    pos.inc
+
+
+# Helper to apply functions to sequences using subscript syntax.
+proc `[]`*[S,T](x: seq[S], filter: proc (x: S): T): seq[T] =
+  result.new_seq(x.len)
+  var pos = 0
+  while pos < x.len:
+    result[pos] = filter(x[pos])
     pos.inc
 
 

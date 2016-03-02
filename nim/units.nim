@@ -1,6 +1,8 @@
 # Implementation of seconds, used for time differences.
 import time_nanos, time_stamp, sequtils
 
+proc bonusWeek(x: Stamp): string {.procvar.} = "^" & $week(x) & "^"
+
 proc test_blog_examples() =
   echo "Showing blog examples.\n"
 
@@ -25,8 +27,10 @@ proc test_blog_examples() =
   echo "…using helper procs… ",
     "2012.01.01".date + (1.m + 1.d + 1.h + 15.i + 17.s) * (0 .. <10)
 
-  echo "Example 5 b[week]: ", values.map_it(int, it.week)
-  echo "Example 5 b[second]: ", values.map_it(int, it.second)
+  echo "Example 5 b[week]: ", values[week]
+  echo "Example 5 b[second]: ", values[second]
+
+  echo "Extra points b[bonusWeek]: ", values[bonusWeek]
 
   echo "\nDid all examples."
 
