@@ -1,7 +1,7 @@
 import time_nanos, strutils, parseutils
 
 type
-  Stamp* = distinct int
+  Stamp* = distinct int64
 
 # Bunch of methods we borrow to allow mixing stamps with seconds.
 proc `+`*(x: Stamp, y: Nano): Stamp {.borrow.}
