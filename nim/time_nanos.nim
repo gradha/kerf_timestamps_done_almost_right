@@ -16,10 +16,8 @@ proc `div`*(x: int64, y: Nano): int64 {.borrow.}
 proc `div`*(x: Nano, y: Nano): int64 {.borrow.}
 proc `+`*(x, y: Nano): Nano {.borrow.}
 proc `-`*(x, y: Nano): Nano {.borrow.}
-
-
-# Proper multiplication of nanoseconds.
-proc `*`*(x: Nano, y: int64): Nano = Nano(int64(x) * y)
+proc `*`*(x, y: Nano): Nano {.borrow.}
+proc `*`*(x: Nano, y: int64): Nano {.borrow.}
 proc `*`*(x: int64, y: Nano): Nano = Nano(x * int64(y))
 
 
