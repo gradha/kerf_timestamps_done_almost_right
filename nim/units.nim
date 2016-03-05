@@ -6,7 +6,7 @@ proc bonusWeek(x: Stamp): string {.procvar.} = "^" & $week(x) & "^"
 proc test_blog_examples() =
   echo "Showing blog examples.\n"
 
-  let a = "2012.01.01".date
+  let a = d"2012.01.01"
   echo "Example 1: ", a
   echo "Example 2:"
   echo "\t", a + 1.d
@@ -16,7 +16,7 @@ proc test_blog_examples() =
   let
     r = to_seq(0 .. <10)
     offsets = r.map_it(Nano, (1.m + 1.d + 1.h + 15.i + 17.s) * it)
-    values = offsets.map_it(Stamp, "2012.01.01".date + it)
+    values = offsets.map_it(Stamp, d"2012.01.01" + it)
 
   echo "Example 4: ", values
 
@@ -25,7 +25,7 @@ proc test_blog_examples() =
       .map_it(Stamp, "2012.01.01".date + it)
 
   echo "…using helper procs… ",
-    "2012.01.01".date + (1.m + 1.d + 1.h + 15.i + 17.s) * (0 .. <10)
+    d"2012.01.01" + (1.m + 1.d + 1.h + 15.i + 17.s) * (0 .. <10)
 
   echo "Example 5 b[week]: ", values[week]
   echo "Example 5 b[second]: ", values[second]

@@ -103,6 +103,7 @@ proc date*(x: string): Stamp =
     result = result + Nano(nanos)
 
 
+proc d*(x: string): Stamp {.inline.} = x.date
 proc zeroalign(x: string, count = 2): string {.inline.} = align(x, count, '0')
 
 proc `$`*(x: Stamp): string =
@@ -174,7 +175,7 @@ proc `[]`*[S,T](x: seq[S], filter: proc (x: S): T): seq[T] =
 
 proc test_stamps*() =
   echo "Testing stamps\n"
-  var a = "2012-01-01".date
+  var a = date"2012-01-01"
   echo "let's start at ", a
   echo "plus one day is ", a + 1.d
   echo "plus one month is ", a + 1.m
@@ -185,7 +186,7 @@ proc test_stamps*() =
   echo "2001.01.01T02:01".date
   echo "2001.01.01T03:02:01".date
   echo "2001.01.01T04:09:02.1".date
-  echo "2001.01.01T04:09:02.12".date
+  echo date"2001.01.01T04:09:02.12"
   echo "2001.01.01T04:09:02.123".date
   echo "2001.01.01T05:04:03.0123".date
   echo "2001.01.01T06:05:04.012345678".date
