@@ -123,7 +123,7 @@ auto map(const std::vector<T> &v, Functor &&f) -> std::vector<decltype(f(*v.begi
 {
 	std::vector<decltype(f(*v.begin()))> ret;
 	std::transform(begin(v), end(v), std::inserter(ret, ret.end()), f);
-    return ret;
+	return ret;
 }
 
 // Inspired by http://stackoverflow.com/a/18626013/172690.
